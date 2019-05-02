@@ -9,7 +9,7 @@
 import Foundation
 
 public protocol HTTPNetworkController {
-    func sendRequest<T: Decodable>(_ request: URLRequest, _ session: URLSession, completion: @escaping (Result<T, Error>) -> Void)
+    func sendRequest<T: Decodable>(_ request: URLRequest, _ session: URLSession, _ completion: @escaping (Result<T, Error>) -> Void)
 }
 
 extension HTTP {
@@ -23,7 +23,7 @@ extension HTTP {
 
 extension HTTPNetworkController {
     
-    func handleCompletion(_ request: URLRequest, _ data: Data?, _ response: URLResponse?, _ error: Error?) -> Result<Data, Error> {
+    private func handleCompletion(_ request: URLRequest, _ data: Data?, _ response: URLResponse?, _ error: Error?) -> Result<Data, Error> {
         if let error: Error = error {
             return .failure(error)
         } else if let data: Data = data {
@@ -39,7 +39,7 @@ extension HTTPNetworkController {
         }
     }
     
-    func sendRequest<T: Decodable>(_ request: URLRequest, _ session: URLSession = URLSession.shared, completion: @escaping (Result<T, Error>) -> Void) {
+    public func sendRequest<T: Decodable>(_ request: URLRequest, _ session: URLSession = URLSession.shared, _ completion: @escaping (Result<T, Error>) -> Void) {
         let task: URLSessionTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             let result: Result<Data, Error> = self.handleCompletion(request, data, response, error)
             switch result {

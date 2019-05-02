@@ -10,7 +10,7 @@ import Foundation
 
 extension HTTP {
     
-    class RequestBuilder {
+    open class RequestBuilder {
         
         // MARK: - Properties
         
@@ -23,7 +23,7 @@ extension HTTP {
         
         // MARK: - Init
         
-        init(baseURL: URL) {
+        public init(baseURL: URL) {
             self.baseURL = baseURL
             self.components = []
             self.queryItems = []
@@ -43,14 +43,14 @@ extension HTTP {
         }
         
         @discardableResult
-        func setMethod(_ method: Method) -> RequestBuilder {
+        public func setMethod(_ method: Method) -> RequestBuilder {
             let result: RequestBuilder = self
             result.method = method
             return result
         }
         
         @discardableResult
-        func setHeader(_ header: Header) -> RequestBuilder {
+        public func setHeader(_ header: Header) -> RequestBuilder {
             let result: RequestBuilder = self
             if let index: Int = self.headers.firstIndex(where: { $0.nameAndValue.name == header.nameAndValue.name }) {
                 result.headers[index] = header
@@ -61,35 +61,35 @@ extension HTTP {
         }
         
         @discardableResult
-        func setAuthorizationToken(_ token: String) -> RequestBuilder {
+        public func setAuthorizationToken(_ token: String) -> RequestBuilder {
             let result: RequestBuilder = self
             result.setHeader(.authorization(token))
             return result
         }
         
         @discardableResult
-        func setBody(_ body: Data) -> RequestBuilder {
+        public func setBody(_ body: Data) -> RequestBuilder {
             let result: RequestBuilder = self
             result.body = body
             return result
         }
         
         @discardableResult
-        func appendPathComponent(_ comp: String) -> RequestBuilder {
+        public func appendPathComponent(_ comp: String) -> RequestBuilder {
             let result: RequestBuilder = self
             result.components.append(comp)
             return result
         }
         
         @discardableResult
-        func appendQueryItem(name: String, value: String) -> RequestBuilder {
+        public func appendQueryItem(name: String, value: String) -> RequestBuilder {
             let result: RequestBuilder = self
             let item: URLQueryItem = URLQueryItem(name: name, value: value)
             result.queryItems.append(item)
             return result
         }
         
-        func build() -> URLRequest {
+        public func build() -> URLRequest {
             var components: URLComponents = URLComponents(url: self.baseURL, resolvingAgainstBaseURL: false)!
             for comp in self.components {
                 components.path += "/\(comp)"
