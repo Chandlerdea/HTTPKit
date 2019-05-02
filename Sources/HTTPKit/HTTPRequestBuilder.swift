@@ -37,8 +37,7 @@ extension HTTP {
         
         private func addHeader(_ header: Header, to request: URLRequest) -> URLRequest {
             var result: URLRequest = request
-            let nameValue: (String, String) = header.nameAndValue
-            result.addValue(nameValue.1, forHTTPHeaderField: nameValue.0)
+            result.add(header)
             return result
         }
         

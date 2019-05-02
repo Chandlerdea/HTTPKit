@@ -9,6 +9,7 @@
 import Foundation
 
 extension HTTP {
+
     public enum Header: Equatable {
         
         case contentType(ContentType)
@@ -24,4 +25,14 @@ extension HTTP {
         }
         
     }
+
+}
+
+extension URLRequest {
+    
+    mutating func add(_ header: HTTP.Header) {
+        let nameValue: (String, String) = header.nameAndValue
+        self.addValue(nameValue.1, forHTTPHeaderField: nameValue.0)
+    }
+    
 }
