@@ -33,6 +33,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		360F91A0227AA7AD005FC51F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3631C0C6227A6F6B008C485C /* HTTPKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HTTPKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3631C0CF227A6F6B008C485C /* HTTPKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HTTPKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		36E247D0227A830000761673 /* HTTPContentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPContentType.swift; sourceTree = "<group>"; };
@@ -71,6 +72,7 @@
 		3631C0BC227A6F6B008C485C = {
 			isa = PBXGroup;
 			children = (
+				360F91A0227AA7AD005FC51F /* README.md */,
 				36E247CF227A830000761673 /* HTTPKit */,
 				36E247DE227A830B00761673 /* HTTPKitTests */,
 				3631C0C7227A6F6B008C485C /* Products */,
