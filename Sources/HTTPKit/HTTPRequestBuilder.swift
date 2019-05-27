@@ -88,7 +88,7 @@ extension HTTP {
             return result
         }
         
-        public func build() -> URLRequest {
+        open func build() -> URLRequest {
             var components: URLComponents = URLComponents(url: self.baseURL, resolvingAgainstBaseURL: false)!
             for comp in self.components {
                 components.path += "/\(comp)"
