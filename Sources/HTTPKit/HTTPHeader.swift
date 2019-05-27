@@ -14,6 +14,7 @@ extension HTTP {
         
         case contentType(ContentType)
         case authorization(String)
+        case cacheControl(CacheControlType)
         
         internal var nameAndValue: (name: String, value: String) {
             switch self {
@@ -21,6 +22,8 @@ extension HTTP {
                 return (name: "Content-Type", value: type.rawValue)
             case .authorization(let token):
                 return (name: "Authorization", value: "Bearer \(token)")
+            case .cacheControl(let type):
+                return (name: "Cache-Control", value: type.rawValue)
             }
         }
         
