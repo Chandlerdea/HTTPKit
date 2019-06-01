@@ -17,6 +17,7 @@ private final class MockProtocol: URLProtocol {
     
     static var responseCode: Int?
     static var payload: String?
+    static var rawData: Data?
     
     override class func canInit(with request: URLRequest) -> Bool {
         return true
@@ -90,6 +91,7 @@ class HTTPNetworkControllerTests: XCTestCase {
     override func tearDown() {
         MockProtocol.responseCode = .none
         MockProtocol.payload = .none
+        MockProtocol.rawData = .none
         super.tearDown()
     }
     
@@ -103,7 +105,7 @@ class HTTPNetworkControllerTests: XCTestCase {
         let controller: HTTPNetworkController = MockController()
         let expectation: XCTestExpectation = self.expectation(description: "successful request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
-        controller.sendRequest(request, self.mockURLSession) { (r: Result<MockModel, Error>) in
+        controller.sendRequest(request, in: self.mockURLSession) { (r: Result<MockModel, Error>) in
             switch r {
             case .success(let model):
                 XCTAssertEqual(model.name, "chandler")
@@ -125,7 +127,7 @@ class HTTPNetworkControllerTests: XCTestCase {
         let controller: HTTPNetworkController = MockController()
         let expectation: XCTestExpectation = self.expectation(description: "failure decoding json request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
-        controller.sendRequest(request, self.mockURLSession) { (r: Result<MockModel, Error>) in
+        controller.sendRequest(request, in: self.mockURLSession) { (r: Result<MockModel, Error>) in
             switch r {
             case .success:
                 XCTFail("test should fail")
@@ -151,7 +153,7 @@ class HTTPNetworkControllerTests: XCTestCase {
         let controller: HTTPNetworkController = MockController()
         let expectation: XCTestExpectation = self.expectation(description: "failure decoding json request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
-        controller.sendRequest(request, self.mockURLSession) { (r: Result<MockModel, Error>) in
+        controller.sendRequest(request, in: self.mockURLSession) { (r: Result<MockModel, Error>) in
             switch r {
             case .success:
                 XCTFail("test should fail")
@@ -177,7 +179,7 @@ class HTTPNetworkControllerTests: XCTestCase {
         let controller: HTTPNetworkController = MockController()
         let expectation: XCTestExpectation = self.expectation(description: "failure decoding json request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
-        controller.sendRequest(request, self.mockURLSession) { (r: Result<MockModel, Error>) in
+        controller.sendRequest(request, in: self.mockURLSession) { (r: Result<MockModel, Error>) in
             switch r {
             case .success:
                 XCTFail("test should fail")
@@ -197,12 +199,31 @@ class HTTPNetworkControllerTests: XCTestCase {
         let controller: HTTPNetworkController = MockController()
         let expectation: XCTestExpectation = self.expectation(description: "unsuccessful request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
-        controller.sendRequest(request, self.mockURLSession) { (r: Result<MockModel, Error>) in
+        controller.sendRequest(request, in: self.mockURLSession) { (r: Result<MockModel, Error>) in
             switch r {
             case .success:
                 XCTFail("exepcted failure")
             case .failure:
                 break
+            }
+            expectation.fulfill()
+        }
+        self.waitForExpectations(timeout: 1, handler: .none)
+    }
+    
+    func testThatRequestWithNoResponseReturnsVoidSuccess() {
+        MockProtocol.responseCode = HTTP.ResponseStatus.noContent.code
+        MockProtocol.payload = String()
+        let controller: HTTPNetworkController = MockController()
+        let expectation: XCTestExpectation = self.expectation(description: "no content response")
+        var request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
+        request.method = .delete
+        controller.sendRequestExpectingNoContent(request, in: self.mockURLSession) { (r: Result<Void, Error>) in
+            switch r {
+            case .success:
+                break
+            case .failure(let error):
+                XCTFail(String(describing: error))
             }
             expectation.fulfill()
         }

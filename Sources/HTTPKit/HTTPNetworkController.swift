@@ -8,8 +8,9 @@
 
 import Foundation
 
-public protocol HTTPNetworkController {
-    func sendRequest<T: Decodable>(_ request: URLRequest, _ session: URLSession, _ completion: @escaping (Result<T, Error>) -> Void)
+public protocol HTTPNetworkController: class {
+    func sendRequest<T: Decodable>(_ request: URLRequest, in session: URLSession, _ completion: @escaping (Result<T, Error>) -> Void)
+    func sendRequestExpectingNoContent(_ request: URLRequest, in session: URLSession, _ completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 extension HTTP {
@@ -39,7 +40,7 @@ extension HTTPNetworkController {
         }
     }
     
-    public func sendRequest<T: Decodable>(_ request: URLRequest, _ session: URLSession = URLSession.shared, _ completion: @escaping (Result<T, Error>) -> Void) {
+    public func sendRequest<T: Decodable>(_ request: URLRequest, in session: URLSession = URLSession.shared, _ completion: @escaping (Result<T, Error>) -> Void) {
         let task: URLSessionTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             let result: Result<Data, Error> = self.handleCompletion(request, data, response, error)
             switch result {
@@ -51,6 +52,19 @@ extension HTTPNetworkController {
                 } catch {
                     completion(.failure(HTTP.ResponseContentError.failureDecodingResponse))
                 }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+        task.resume()
+    }
+    
+    public func sendRequestExpectingNoContent(_ request: URLRequest, in session: URLSession = URLSession.shared, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        let task: URLSessionTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
+            let result: Result<Data, Error> = self.handleCompletion(request, data, response, error)
+            switch result {
+            case .success:
+                completion(.success(()))
             case .failure(let error):
                 completion(.failure(error))
             }
