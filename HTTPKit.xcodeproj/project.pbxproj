@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		360447D922E28FCD00E70304 /* HTTPModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360447D822E28FCD00E70304 /* HTTPModelController.swift */; };
 		360F91B0227BCC19005FC51F /* HTTPCacheControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360F91AF227BCC19005FC51F /* HTTPCacheControl.swift */; };
 		3631C0D0227A6F6B008C485C /* HTTPKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3631C0C6227A6F6B008C485C /* HTTPKit.framework */; };
 		36E247D7227A830100761673 /* HTTPContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E247D0227A830000761673 /* HTTPContentType.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		360447D822E28FCD00E70304 /* HTTPModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPModelController.swift; sourceTree = "<group>"; };
 		360F91A0227AA7AD005FC51F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		360F91AF227BCC19005FC51F /* HTTPCacheControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPCacheControl.swift; sourceTree = "<group>"; };
 		3631C0C6227A6F6B008C485C /* HTTPKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HTTPKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +102,7 @@
 				36E247D4227A830000761673 /* HTTPRequestBuilder.swift */,
 				36E247D5227A830000761673 /* HTTP.swift */,
 				36E247D6227A830000761673 /* HTTPNetworkController.swift */,
+				360447D822E28FCD00E70304 /* HTTPModelController.swift */,
 				360F91AF227BCC19005FC51F /* HTTPCacheControl.swift */,
 			);
 			name = HTTPKit;
@@ -235,6 +238,7 @@
 				36E247DC227A830100761673 /* HTTP.swift in Sources */,
 				36E247D7227A830100761673 /* HTTPContentType.swift in Sources */,
 				360F91B0227BCC19005FC51F /* HTTPCacheControl.swift in Sources */,
+				360447D922E28FCD00E70304 /* HTTPModelController.swift in Sources */,
 				36E247D9227A830100761673 /* HTTPMethod.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
