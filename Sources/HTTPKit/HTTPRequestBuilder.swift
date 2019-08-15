@@ -87,6 +87,24 @@ extension HTTP {
             result.queryItems.append(item)
             return result
         }
+
+        @discardableResult
+        public func post(with body: Data) -> RequestBuilder {
+            
+            self.setMethod(.post)
+            self.setBody(body)
+            
+            return self
+        }
+        
+        @discardableResult
+        public func put(with body: Data) -> RequestBuilder {
+            
+            self.setMethod(.put)
+            self.setBody(body)
+            
+            return self
+        }
         
         open func build() -> URLRequest {
             var components: URLComponents = URLComponents(url: self.baseURL, resolvingAgainstBaseURL: false)!
