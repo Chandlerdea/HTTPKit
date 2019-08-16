@@ -72,7 +72,14 @@ extension HTTP {
             result.body = body
             return result
         }
-        
+
+        @discardableResult
+        public func setPathComponents(_ comps: [String]) -> RequestBuilder {
+            let result: RequestBuilder = self
+            result.components = comps
+            return result
+        }
+
         @discardableResult
         public func appendPathComponent(_ comp: String) -> RequestBuilder {
             let result: RequestBuilder = self
