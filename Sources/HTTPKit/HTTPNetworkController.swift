@@ -13,6 +13,14 @@ public protocol HTTPNetworkController: class {
     func sendRequestExpectingNoContent(_ request: URLRequest, in session: URLSession, _ completion: @escaping (Result<Void, Error>) -> Void)
 }
 
+extension HTTPNetworkController {
+
+    public func sendRequest<T: Decodable>(with builder: HTTP.RequestBuilder, in session: URLSession, _ completion: @escaping (Result<T, Error>) -> Void) {
+        return self.sendRequest(builder.build(), in: session, completion)
+    }
+
+}
+
 extension HTTP {
     
     public enum ResponseContentError: Error {
