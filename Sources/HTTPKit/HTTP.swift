@@ -8,4 +8,4 @@
 
 import Foundation
 
-public enum HTTP {}
+public struct HTTP {}

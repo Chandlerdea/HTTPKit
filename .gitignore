@@ -1,4 +1,4 @@
-UserInterfaceState.xcuserstate
-Breakpoints_v2.xcbkptlist
-IDEWorkspaceChecks.plist
-contents.xcworkspacedata
+.DS_Store
+/.build
+/Packages
+/*.xcodeproj
