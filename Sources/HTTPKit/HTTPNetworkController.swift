@@ -15,7 +15,7 @@ public protocol HTTPNetworkController: class {
 
 extension HTTPNetworkController {
 
-    public func sendRequest<T: Decodable>(with builder: HTTP.RequestBuilder, in session: URLSession, _ completion: @escaping (Result<T, Error>) -> Void) {
+    public func sendRequest<T: Decodable>(with builder: HTTP.RequestBuilder, in session: URLSession = URLSession.shared, _ completion: @escaping (Result<T, Error>) -> Void) {
         return self.sendRequest(builder.build(), in: session, completion)
     }
 
