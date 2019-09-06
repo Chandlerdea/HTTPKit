@@ -16,10 +16,12 @@ class HTTPHeaderTests: XCTestCase {
         XCTAssertEqual(HTTP.Header.contentType(.json).nameAndValue.1, "application/json")
     }
     
-    func testThatHEaderIsSet() {
+    func testThatHeaderIsSet() {
         var request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
         request.add(.contentType(.json))
         XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], "application/json")
+        request.add(.cacheControl(.none))
+        XCTAssertEqual(request.allHTTPHeaderFields?["Cache-Control"], "no-cache")
     }
 
 }

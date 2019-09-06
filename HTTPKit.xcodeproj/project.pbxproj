@@ -10,6 +10,9 @@
 		360447D922E28FCD00E70304 /* HTTPModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360447D822E28FCD00E70304 /* HTTPModelController.swift */; };
 		360F91B0227BCC19005FC51F /* HTTPCacheControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 360F91AF227BCC19005FC51F /* HTTPCacheControl.swift */; };
 		3631C0D0227A6F6B008C485C /* HTTPKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3631C0C6227A6F6B008C485C /* HTTPKit.framework */; };
+		36945EDE23220F9000E09EB2 /* HTTPModelControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36945EDD23220F9000E09EB2 /* HTTPModelControllerTests.swift */; };
+		36945EE023220FD600E09EB2 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36945EDF23220FD600E09EB2 /* MockURLProtocol.swift */; };
+		36945EE22322109500E09EB2 /* MockNetworkTestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36945EE12322109500E09EB2 /* MockNetworkTestable.swift */; };
 		36E247D7227A830100761673 /* HTTPContentType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E247D0227A830000761673 /* HTTPContentType.swift */; };
 		36E247D8227A830100761673 /* HTTPResponseStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E247D1227A830000761673 /* HTTPResponseStatus.swift */; };
 		36E247D9227A830100761673 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E247D2227A830000761673 /* HTTPMethod.swift */; };
@@ -40,6 +43,9 @@
 		360F91AF227BCC19005FC51F /* HTTPCacheControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPCacheControl.swift; sourceTree = "<group>"; };
 		3631C0C6227A6F6B008C485C /* HTTPKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HTTPKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3631C0CF227A6F6B008C485C /* HTTPKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HTTPKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		36945EDD23220F9000E09EB2 /* HTTPModelControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPModelControllerTests.swift; sourceTree = "<group>"; };
+		36945EDF23220FD600E09EB2 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
+		36945EE12322109500E09EB2 /* MockNetworkTestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockNetworkTestable.swift; sourceTree = "<group>"; };
 		36E247D0227A830000761673 /* HTTPContentType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPContentType.swift; sourceTree = "<group>"; };
 		36E247D1227A830000761673 /* HTTPResponseStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPResponseStatus.swift; sourceTree = "<group>"; };
 		36E247D2227A830000761673 /* HTTPMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
@@ -112,8 +118,11 @@
 		36E247DE227A830B00761673 /* HTTPKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				36945EDF23220FD600E09EB2 /* MockURLProtocol.swift */,
+				36945EE12322109500E09EB2 /* MockNetworkTestable.swift */,
 				36E247DF227A830B00761673 /* HTTPMethodTests.swift */,
 				36E247E0227A830B00761673 /* HTTPResponseStatusTests.swift */,
+				36945EDD23220F9000E09EB2 /* HTTPModelControllerTests.swift */,
 				36E247E1227A830B00761673 /* HTTPNetworkControllerTests.swift */,
 				36E247E2227A830B00761673 /* HTTPHeaderTests.swift */,
 				36E247E3227A830B00761673 /* HTTPRequestBuilderTests.swift */,
@@ -247,9 +256,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36945EE023220FD600E09EB2 /* MockURLProtocol.swift in Sources */,
 				36E247E7227A830B00761673 /* HTTPHeaderTests.swift in Sources */,
 				36E247E6227A830B00761673 /* HTTPNetworkControllerTests.swift in Sources */,
 				36E247E8227A830B00761673 /* HTTPRequestBuilderTests.swift in Sources */,
+				36945EE22322109500E09EB2 /* MockNetworkTestable.swift in Sources */,
+				36945EDE23220F9000E09EB2 /* HTTPModelControllerTests.swift in Sources */,
 				36E247E5227A830B00761673 /* HTTPResponseStatusTests.swift in Sources */,
 				36E247E4227A830B00761673 /* HTTPMethodTests.swift in Sources */,
 			);

@@ -13,91 +13,20 @@ private struct MockModel: Codable {
     let name: String
 }
 
-private final class MockProtocol: URLProtocol {
-    
-    static var responseCode: Int?
-    static var payload: String?
-    static var rawData: Data?
-    
-    override class func canInit(with request: URLRequest) -> Bool {
-        return true
-    }
-    
-    override class func canonicalRequest(for request: URLRequest) -> URLRequest {
-        return request
-    }
-    
-    override func startLoading() {
-        
-        if let code: Int = type(of: self).responseCode {
-            
-            var contentLength: Int = 0
-            // If the status is ok, send data
-            if let payload: Data = type(of: self).payload?.data(using: .utf8), code == HTTP.ResponseStatus.ok.code {
-                contentLength = payload.count
-                self.client?.urlProtocol(self, didLoad: payload)
-            }
-            let response: HTTPURLResponse
-            if let status: HTTP.ResponseStatus = HTTP.ResponseStatus(code: code) {
-                response = HTTPURLResponse(
-                    url: self.request.url!,
-                    statusCode: status.code,
-                    httpVersion: "1.1",
-                    headerFields: [
-                        "Content-Length": String(describing: contentLength),
-                        "Content-Type": "application/json; charset=utf-8"
-                    ]
-                )!
-            } else {
-                response = HTTPURLResponse(
-                    url: self.request.url!,
-                    statusCode: code,
-                    httpVersion: "1.1",
-                    headerFields: [
-                        "Content-Length": String(describing: contentLength),
-                        "Content-Type": "application/json; charset=utf-8"
-                    ]
-                )!
-            }
-            self.client?.urlProtocol(
-                self,
-                didReceive: response as URLResponse,
-                cacheStoragePolicy: .notAllowed
-            )
-        } else {
-            let nsError: NSError = NSError(domain: "com.HTTPKitTests", code: 0, userInfo: .none)
-            self.client?.urlProtocol(self, didFailWithError: nsError)
-        }
-        self.client?.urlProtocolDidFinishLoading(self)
-    }
-    
-    override func stopLoading() {
-        
-    }
-}
-
 private class MockController: HTTPNetworkController {
     
 }
 
-class HTTPNetworkControllerTests: XCTestCase {
-
-    private let mockURLSession: URLSession = {
-        var config: URLSessionConfiguration = .ephemeral
-        config.protocolClasses = [MockProtocol.self]
-        return URLSession(configuration: config)
-    }()
+class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
     
     override func tearDown() {
-        MockProtocol.responseCode = .none
-        MockProtocol.payload = .none
-        MockProtocol.rawData = .none
+        self.resetURLProtocol()
         super.tearDown()
     }
     
     func testThatRequestSendsSuccessfully() {
-        MockProtocol.responseCode = 200
-        MockProtocol.payload = """
+        MockURLProtocol.response = .ok
+        MockURLProtocol.payload = """
         {
             "name": "chandler"
         }
@@ -105,7 +34,7 @@ class HTTPNetworkControllerTests: XCTestCase {
         let controller: HTTPNetworkController = MockController()
         let expectation: XCTestExpectation = self.expectation(description: "successful request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
-        controller.sendRequest(request, in: self.mockURLSession) { (r: Result<MockModel, Error>) in
+        controller.sendRequest(request, in: self.urlSession) { (r: Result<MockModel, Error>) in
             switch r {
             case .success(let model):
                 XCTAssertEqual(model.name, "chandler")
@@ -118,8 +47,8 @@ class HTTPNetworkControllerTests: XCTestCase {
     }
     
     func testThatBadJSONThrowsDecodingFailureError() {
-        MockProtocol.responseCode = 200
-        MockProtocol.payload = """
+        MockURLProtocol.response = .ok
+        MockURLProtocol.payload = """
         {
             "poo": "Foo"
         }
@@ -127,7 +56,7 @@ class HTTPNetworkControllerTests: XCTestCase {
         let controller: HTTPNetworkController = MockController()
         let expectation: XCTestExpectation = self.expectation(description: "failure decoding json request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
-        controller.sendRequest(request, in: self.mockURLSession) { (r: Result<MockModel, Error>) in
+        controller.sendRequest(request, in: self.urlSession) { (r: Result<MockModel, Error>) in
             switch r {
             case .success:
                 XCTFail("test should fail")
@@ -144,8 +73,8 @@ class HTTPNetworkControllerTests: XCTestCase {
     }
     
     func testThatUnexpectedResponseCodeThrowsError() {
-        MockProtocol.responseCode = 201
-        MockProtocol.payload = """
+        MockURLProtocol.response = .created
+        MockURLProtocol.payload = """
         {
             "name": "chandler"
         }
@@ -153,7 +82,7 @@ class HTTPNetworkControllerTests: XCTestCase {
         let controller: HTTPNetworkController = MockController()
         let expectation: XCTestExpectation = self.expectation(description: "failure decoding json request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
-        controller.sendRequest(request, in: self.mockURLSession) { (r: Result<MockModel, Error>) in
+        controller.sendRequest(request, in: self.urlSession) { (r: Result<MockModel, Error>) in
             switch r {
             case .success:
                 XCTFail("test should fail")
@@ -170,8 +99,8 @@ class HTTPNetworkControllerTests: XCTestCase {
     }
     
     func testThatUnknownResponseCodeThrowsError() {
-        MockProtocol.responseCode = 9999
-        MockProtocol.payload = """
+        MockURLProtocol.responseCode = 9999
+        MockURLProtocol.payload = """
         {
             "name": "chandler"
         }
@@ -179,7 +108,7 @@ class HTTPNetworkControllerTests: XCTestCase {
         let controller: HTTPNetworkController = MockController()
         let expectation: XCTestExpectation = self.expectation(description: "failure decoding json request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
-        controller.sendRequest(request, in: self.mockURLSession) { (r: Result<MockModel, Error>) in
+        controller.sendRequest(request, in: self.urlSession) { (r: Result<MockModel, Error>) in
             switch r {
             case .success:
                 XCTFail("test should fail")
@@ -199,7 +128,7 @@ class HTTPNetworkControllerTests: XCTestCase {
         let controller: HTTPNetworkController = MockController()
         let expectation: XCTestExpectation = self.expectation(description: "unsuccessful request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
-        controller.sendRequest(request, in: self.mockURLSession) { (r: Result<MockModel, Error>) in
+        controller.sendRequest(request, in: self.urlSession) { (r: Result<MockModel, Error>) in
             switch r {
             case .success:
                 XCTFail("exepcted failure")
@@ -212,13 +141,13 @@ class HTTPNetworkControllerTests: XCTestCase {
     }
     
     func testThatRequestWithNoResponseReturnsVoidSuccess() {
-        MockProtocol.responseCode = HTTP.ResponseStatus.noContent.code
-        MockProtocol.payload = String()
+        MockURLProtocol.response = .noContent
+        MockURLProtocol.payload = String()
         let controller: HTTPNetworkController = MockController()
         let expectation: XCTestExpectation = self.expectation(description: "no content response")
         var request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
         request.method = .delete
-        controller.sendRequestExpectingNoContent(request, in: self.mockURLSession) { (r: Result<Void, Error>) in
+        controller.sendRequestExpectingNoContent(request, in: self.urlSession) { (r: Result<Void, Error>) in
             switch r {
             case .success:
                 break

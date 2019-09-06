@@ -52,13 +52,50 @@ class HTTPRequestBuilderTests: XCTestCase {
         XCTAssertEqual(request.httpBody, body)
         
     }
+
+    func testSettingPostData() {
+
+        let body: Data = """
+        {
+            "foo": "bar"
+        }
+        """.data(using: .utf8)!
+
+        let request: URLRequest = HTTP.RequestBuilder(baseURL: self.baseURL).post(with: body).build()
+        
+        XCTAssertEqual(request.httpBody, body)
+        XCTAssertEqual(request.httpMethod, "POST")
+
+    }
+
+    func testSettingPutData() {
+
+        let body: Data = """
+        {
+            "foo": "bar"
+        }
+        """.data(using: .utf8)!
+        
+        let request: URLRequest = HTTP.RequestBuilder(baseURL: self.baseURL).put(with: body).build()
+        
+        XCTAssertEqual(request.httpBody, body)
+        XCTAssertEqual(request.httpMethod, "PUT")
+
+    }
     
+    func testSettingPathComponentsWorks() {
+        
+        let request: URLRequest = HTTP.RequestBuilder(baseURL: self.baseURL).setPathComponents(["foo", "bar"]).build()
+        
+        XCTAssertEqual(request.url?.absoluteString, "http://www.google.com/foo/bar")
+        
+    }
+
     func testAppendingPathComponentWorks() {
         
-        let request: URLRequest = HTTP.RequestBuilder(baseURL: self.baseURL).appendPathComponent("test").build()
+        let request: URLRequest = HTTP.RequestBuilder(baseURL: self.baseURL).appendPathComponent("foo").build()
         
-        XCTAssertEqual(request.url?.absoluteString, "http://www.google.com/test")
-        
+        XCTAssertEqual(request.url?.absoluteString, "http://www.google.com/foo")
     }
     
     func testThatAppendingOneQueryItemWorks() {
