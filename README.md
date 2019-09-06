@@ -1,14 +1,32 @@
 # HTTPKit
 
-A Swift framework containing constructs for interacting with APIs over the HTTP protocol.
+A Swift package containing constructs for interacting with APIs over the HTTP protocol.
 
 ## Motivation
 
 `URLSession` is great, but it has some small shortcomings. Specifically, when it comes to using RESTful APIs over HTTP. For example, `URLRequest` has a `httpMethod` property of type `String`. I have found myself making a `HTTPMethod` enum so many times, I decided to take these abstractions around http conventions, and put them in a framework.
 
-## Example
+## Installation
 
-I have included an Example project showing one way of using `HTTPKit` in an app using a RESTful api. Here are some examples of the abstractions included in the framework:
+### Swift Package Manager
+
+You can use the [Swift Package Manager](https://swift.org/package-manager/) to install `HTTPKit` by adding the proper description to your `Package.swift` file:
+```swift
+// swift-tools-version:5.0
+import PackageDescription
+
+let package = Package(
+    name: "YOUR_PROJECT_NAME",
+    dependencies: [
+        .package(url: "https://github.com/Chandlerdea/HTTPKit.git", from: "1.1"),
+    ]
+)
+```
+
+Then run `swift build` whenever you get prepared.
+
+### Manual
+Clone the repo with `git clone git@github.com:Chandlerdea/HTTPKit.git`, and drag the `Sources/HTTPKit` directory into your project
 
 ### HTTP.Method
 The `HTTP.Method` type is an enum that you can use directly with `URLRequest`, like this:
