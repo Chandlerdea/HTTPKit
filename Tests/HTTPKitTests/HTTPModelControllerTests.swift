@@ -134,7 +134,6 @@ class HTTPModelControllerTests: XCTestCase, MockNetworkTestable {
 
     func testThatControllerDeletesModel() throws {
         MockURLProtocol.response = .noContent
-        let model: MockModel = MockModel(name: "carter")
         let controller: HTTPModelController = MockModelController()
         let expectation: XCTestExpectation = self.expectation(description: "delete model")
         controller.deleteModel(
