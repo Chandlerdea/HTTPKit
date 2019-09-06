@@ -42,7 +42,42 @@ if response.hasValidResponseStatus(for: response.originalRequest) { ...
 ```
 
 ### HTTPNetworkController
-`HTTPNetworkController ` is a protocol which sends a `URLRequest`, and decodes the returned json into the supplied generic type. The nice thing about this protocol is that it contains the logic for mapping the response code to the request method, and decoding the json. When using this protocol, you don't even need to worry about `HTTP.ResponseStatus`. There are examples of this being used in the example project.
+`HTTPNetworkController ` is a protocol which sends a `URLRequest`, and decodes the returned json into the supplied generic type. The nice thing about this protocol is that it contains the logic for mapping the response code to the request method, validating the response, and decoding the json. When using this protocol, you don't even need to worry about `HTTP.ResponseStatus`.
+
+```swift
+final class UsersController: HTTPNetworkController {
+
+    func getUser(for post: Post, completion: @escaping (Result<User, Error>) -> Void) {
+        let request: URLRequest = UsersRequestBuilder().user(for: post).build()
+        self.sendRequest(request, completion)
+    }
+
+}
+```
+
+### HTTPModelController
+`HTTPModelController` is a protocol that contains basic CRUD methods for generic types, that inherits from `HTTPNetworkController`. This sets the `HTTP.Method` of the `URLRequest`, and creates and sends the `URLRequest`.
+
+```swift
+final class PostsController: HTTPModelController {
+
+    func uploadPost(_ post: Post, completion: @escaping (Result<Void, Error>) -> Void) {
+        let requestBuilder: PostsRequestBuilder().create(post)
+        self.postModel(
+            with: requestBuilder,
+            completion: { (result: Result<Post, Error>) in
+                switch result {
+                case .success:
+                    ...
+                case .failure:
+                    ...
+                }
+            }
+        )
+    }
+
+}
+```
 
 ### HTTP.RequestBuilder
 `HTTP.RequestBuilder` is a class which uses the [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern) to build your `URLRequest`s. There are examples of this class being used in the example project. Ideally you would make a subclass, and use it like this:
