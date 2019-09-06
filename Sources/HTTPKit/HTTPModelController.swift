@@ -22,22 +22,19 @@ public protocol HTTPModelController: HTTPNetworkController {
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
     )
     
-    func postModel<Model: Codable & Equatable, ResponsePaylod: Codable & Equatable>(
-        _ model: Model,
+    func postModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession,
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
     )
     
-    func putModel<Model: Codable & Equatable, ResponsePaylod: Codable & Equatable>(
-        _ model: Model,
+    func putModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession,
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
     )
     
-    func deleteModel<Model: Codable & Equatable>(
-        _ model: Model,
+    func deleteModel(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession,
         completion: @escaping (Result<Void, Error>) -> Void
@@ -65,8 +62,7 @@ extension HTTPModelController {
         self.sendRequest(request, in: session, completion)
     }
 
-    public func postModel<Model: Codable & Equatable, ResponsePaylod: Codable & Equatable>(
-        _ model: Model,
+    public func postModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession = URLSession.shared,
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
@@ -75,8 +71,7 @@ extension HTTPModelController {
         self.sendRequest(request, in: session, completion)
     }
 
-    public func putModel<Model: Codable & Equatable, ResponsePaylod: Codable & Equatable>(
-        _ model: Model,
+    public func putModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession = URLSession.shared,
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
@@ -85,8 +80,7 @@ extension HTTPModelController {
         self.sendRequest(request, in: session, completion)
     }
 
-    public func deleteModel<Model: Codable & Equatable>(
-        _ model: Model,
+    public func deleteModel(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession = URLSession.shared,
         completion: @escaping (Result<Void, Error>) -> Void

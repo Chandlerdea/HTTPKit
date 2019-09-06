@@ -90,7 +90,6 @@ class HTTPModelControllerTests: XCTestCase, MockNetworkTestable {
         let controller: HTTPModelController = MockModelController()
         let expectation: XCTestExpectation = self.expectation(description: "post model")
         controller.postModel(
-            model,
             with: self.requestBuilder,
             in: self.urlSession,
             completion: { (r: Result<MockModel, Error>) in
@@ -117,7 +116,6 @@ class HTTPModelControllerTests: XCTestCase, MockNetworkTestable {
         let controller: HTTPModelController = MockModelController()
         let expectation: XCTestExpectation = self.expectation(description: "put model")
         controller.putModel(
-            model,
             with: self.requestBuilder,
             in: self.urlSession,
             completion: { (r: Result<MockModel, Error>) in
@@ -140,7 +138,6 @@ class HTTPModelControllerTests: XCTestCase, MockNetworkTestable {
         let controller: HTTPModelController = MockModelController()
         let expectation: XCTestExpectation = self.expectation(description: "delete model")
         controller.deleteModel(
-            model,
             with: self.requestBuilder,
             in: self.urlSession,
             completion: { (r: Result<Void, Error>) in
