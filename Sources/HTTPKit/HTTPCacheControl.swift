@@ -9,9 +9,13 @@
 import Foundation
 
 extension HTTP {
+
     
+    /// Values that can be set as the `Cache-Control` header of a `URLRequest`
+    ///
+    /// - none: no-cache
     public enum CacheControlType: String {
         case none = "no-cache"
     }
-    
+
 }

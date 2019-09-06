@@ -8,32 +8,64 @@
 
 import Foundation
 
+/// An interface inheriting from `HTTPNetworkController` that adds CRUD methods for model objects
 public protocol HTTPModelController: HTTPNetworkController {
 
+    
+    /// Makes a GET request and decodes an array of generic models
+    ///
+    /// - Parameters:
+    ///   - requestBuilder: The `HTTP.RequestBuilder` to build the `URLRequest`
+    ///   - session: The `URLSession` that will send the `URLRequest`. This is used to inject a mock `URLSession`
+    ///   - completion: A closure that passes `Result<[ResponsePaylod], Error>`
     func getModels<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession,
         completion: @escaping (Result<[ResponsePaylod], Error>) -> Void
     )
-    
+
+    /// Makes a GET request and decodes a generic model
+    ///
+    /// - Parameters:
+    ///   - requestBuilder: The `HTTP.RequestBuilder` to build the `URLRequest`
+    ///   - session: The `URLSession` that will send the `URLRequest`. This is used to inject a mock `URLSession`
+    ///   - completion: A closure that passes `Result<ResponsePaylod, Error>`
     func getModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession,
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
     )
-    
+
+    /// Makes a POST request and decodes a generic model
+    ///
+    /// - Parameters:
+    ///   - requestBuilder: The `HTTP.RequestBuilder` to build the `URLRequest`
+    ///   - session: The `URLSession` that will send the `URLRequest`. This is used to inject a mock `URLSession`
+    ///   - completion: A closure that passes `Result<ResponsePaylod, Error>`
     func postModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession,
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
     )
-    
+
+    /// Makes a PUT request and decodes a generic model
+    ///
+    /// - Parameters:
+    ///   - requestBuilder: The `HTTP.RequestBuilder` to build the `URLRequest`
+    ///   - session: The `URLSession` that will send the `URLRequest`. This is used to inject a mock `URLSession`
+    ///   - completion: A closure that passes `Result<ResponsePaylod, Error>`
     func putModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession,
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
     )
-    
+
+    /// Makes a DELETE request and passes a `Result<Void, Error>`
+    ///
+    /// - Parameters:
+    ///   - requestBuilder: The `HTTP.RequestBuilder` to build the `URLRequest`
+    ///   - session: The `URLSession` that will send the `URLRequest`. This is used to inject a mock `URLSession`
+    ///   - completion: A closure that passes `Result<Void, Error>`
     func deleteModel(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession,

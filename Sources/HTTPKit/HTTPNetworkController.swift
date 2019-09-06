@@ -8,14 +8,48 @@
 
 import Foundation
 
+/// Interface for sending `URLRequest`s and decoding responses
 public protocol HTTPNetworkController: class {
-    func sendRequest<T: Decodable>(_ request: URLRequest, in session: URLSession, _ completion: @escaping (Result<T, Error>) -> Void)
-    func sendRequestExpectingNoContent(_ request: URLRequest, in session: URLSession, _ completion: @escaping (Result<Void, Error>) -> Void)
+    
+    /// Sends a `URLRequest` and attempts to decode the response to generic type `T`
+    ///
+    /// - Parameters:
+    ///   - request: The `URLReqeust` to send
+    ///   - session: The `URLSession` that will send the `URLRequest`. This is used to inject a mock `URLSession`
+    ///   - completion: A closure that passes `Result<T, Error>`
+    func sendRequest<T: Decodable>(
+        _ request: URLRequest,
+        in session: URLSession,
+        _ completion: @escaping (Result<T, Error>) -> Void
+    )
+
+    
+    /// Sends a `URLRequest` that expects the response to have no content
+    ///
+    /// - Parameters:
+    ///   - request: The `URLReqeust` to send
+    ///   - session: The `URLSession` that will send the `URLRequest`. This is used to inject a mock `URLSession`
+    ///   - completion: A closure that passes `Result<Void, Error>`
+    func sendRequestExpectingNoContent(
+        _ request: URLRequest,
+        in session: URLSession,
+        _ completion: @escaping (Result<Void, Error>) -> Void
+    )
 }
 
 extension HTTPNetworkController {
 
-    public func sendRequest<T: Decodable>(with builder: HTTP.RequestBuilder, in session: URLSession = URLSession.shared, _ completion: @escaping (Result<T, Error>) -> Void) {
+    /// Sends a `URLRequest` and attempts to decode the response to generic type `T`
+    ///
+    /// - Parameters:
+    ///   - builder: The `HTTP.RequestBuilder` that will build the `URLRequest`
+    ///   - session: The `URLSession` that will send the `URLRequest`. This is used to inject a mock `URLSession`
+    ///   - completion: A closure that passes `Result<T, Error>`
+    public func sendRequest<T: Decodable>(
+        with builder: HTTP.RequestBuilder,
+        in session: URLSession = URLSession.shared,
+        _ completion: @escaping (Result<T, Error>) -> Void
+    ) {
         return self.sendRequest(builder.build(), in: session, completion)
     }
 
@@ -32,7 +66,12 @@ extension HTTP {
 
 extension HTTPNetworkController {
     
-    private func handleCompletion(_ request: URLRequest, _ data: Data?, _ response: URLResponse?, _ error: Error?) -> Result<Data, Error> {
+    private func handleCompletion(
+        _ request: URLRequest,
+        _ data: Data?,
+        _ response: URLResponse?,
+        _ error: Error?
+    ) -> Result<Data, Error> {
         if let error: Error = error {
             return .failure(error)
         } else if let data: Data = data {
@@ -48,7 +87,11 @@ extension HTTPNetworkController {
         }
     }
     
-    public func sendRequest<T: Decodable>(_ request: URLRequest, in session: URLSession = URLSession.shared, _ completion: @escaping (Result<T, Error>) -> Void) {
+    public func sendRequest<T: Decodable>(
+        _ request: URLRequest,
+        in session: URLSession = URLSession.shared,
+        _ completion: @escaping (Result<T, Error>) -> Void
+    ) {
         let task: URLSessionTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             let result: Result<Data, Error> = self.handleCompletion(request, data, response, error)
             switch result {
@@ -67,7 +110,11 @@ extension HTTPNetworkController {
         task.resume()
     }
     
-    public func sendRequestExpectingNoContent(_ request: URLRequest, in session: URLSession = URLSession.shared, _ completion: @escaping (Result<Void, Error>) -> Void) {
+    public func sendRequestExpectingNoContent(
+        _ request: URLRequest,
+        in session: URLSession = URLSession.shared,
+        _ completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         let task: URLSessionTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             let result: Result<Data, Error> = self.handleCompletion(request, data, response, error)
             switch result {

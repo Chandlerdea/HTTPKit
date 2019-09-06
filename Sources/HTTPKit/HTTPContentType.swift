@@ -9,10 +9,15 @@
 import Foundation
 
 extension HTTP {
+
     
+    /// Values that can be set as the `Content-Type` header of a `URLRequest`
+    ///
+    /// - json: application/json
+    /// - xml: application/xml
     public enum ContentType: String {
         case json = "application/json"
         case xml = "application/xml"
     }
-    
+
 }

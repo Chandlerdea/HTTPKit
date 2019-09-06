@@ -9,7 +9,7 @@
 import Foundation
 
 extension HTTP {
-    
+
     public enum Method: String {
         case get = "GET"
         case post = "POST"
