@@ -12,6 +12,7 @@ env:
   - SWIFT_VERSION=swift-5.0-DEVELOPMENT-SNAPSHOT-2019-03-24-a
   # PACKAGE_VERSION will be used by travis to create the Github release tag
   - PACKAGE_VERSION=1.1
+  - CODECOV_TOKEN=c34e25cc-2bfd-4a5e-95eb-7f014b828fee
 jobs:
   include:
   - stage: OSX test
