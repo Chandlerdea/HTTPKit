@@ -1,5 +1,10 @@
 # HTTPKit
-[![Travis CI](https://travis-ci.org/Chandlerdea/HTTPKit.svg?branch=master)](https://travis-ci.org/Chandlerdea/HTTPKit) ![Swift Version](https://img.shields.io/static/v1?label=Swift&message=5.0&color=blue) ![Platform](https://img.shields.io/badge/platforms-iOS%2012.2%20%7C%20macOS%2010.14.4%20%7C%20tvOS%2011.2%20%7C%20watchOS%205.2-F28D00.svg)
+![swift 5.1](https://img.shields.io/badge/swift-5.0-blue.svg)
+![iOS](https://img.shields.io/badge/os-iOS-green.svg)
+![macOS](https://img.shields.io/badge/os-macOS-green.svg)
+![tvOS](https://img.shields.io/badge/os-tvOS-green.svg)
+[![Build Status](https://travis-ci.com/carson-katri/swift-request.svg?branch=master)](https://travis-ci.com/carson-katri/swift-request)
+[![codecov](https://codecov.io/gh/Chandlerdea/HTTPKit/branch/master/graph/badge.svg)](https://codecov.io/gh/Chandlerdea/HTTPKit)
 
 A Swift package containing constructs for interacting with APIs over the HTTP protocol.
 
