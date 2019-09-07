@@ -9,7 +9,7 @@ branches:
 env:
   global:
   - SWIFT_BRANCH=swift-5.0-branch
-  - SWIFT_VERSION=swift-5.0-DEVELOPMENT-SNAPSHOT-2019-09-04-a
+  - SWIFT_VERSION=swift-5.0-DEVELOPMENT-SNAPSHOT-2019-03-24-a
   # PACKAGE_VERSION will be used by travis to create the Github release tag
   - PACKAGE_VERSION=1.1
 jobs:
