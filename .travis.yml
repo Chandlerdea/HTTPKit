@@ -25,7 +25,7 @@ jobs:
     - export PATH="/Library/Developer/Toolchains/$SWIFT_VERSION.xctoolchain/usr/bin:$PATH"
     script:
     - swift package update
-    - swift test -enable-code-coverage YES
+    - swift test --enable-code-coverage
     after_success:
     - bash <(curl -s https://codecov.io/bash)
   # The final stage will create a new Github tag using the version specified above, this will create
