@@ -26,6 +26,8 @@ jobs:
     script:
     - swift package update
     - swift test
+    after_success:
+    - bash <(curl -s https://codecov.io/bash)
   # The final stage will create a new Github tag using the version specified above, this will create
   # a new release in Github
   #- stage: Set tag
