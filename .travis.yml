@@ -1,4 +1,5 @@
 language: objective-c
 osx_image: xcode10.3
 script:
+    - xcodebuild -project HTTPKit.xcodeproj -list
     - xcodebuild clean test -project HTTPKit.xcodeproj -scheme HTTPKit-Package -destination "platform=iOS Simulator,name=iPhone X,OS=12.2" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO -quiet
