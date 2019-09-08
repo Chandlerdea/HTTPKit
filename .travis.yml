@@ -1,9 +1,15 @@
-language: swift
-script:
-  swift package generate-xcodeproj
-  xcodebuild test \
-          -scheme HTTPKit \
-          -destination platform="macOS" \
-          --enable-code-coverage \
-          -derivedDataPath .build/derivedData
-
+- name: macos xcode test
+  stage: test
+  os: osx
+  osx_image: xcode10.2
+  script:
+    swift package generate-xcodeproj
+    xcodebuild test \
+            -scheme HTTPKit \
+            -destination platform="macOS" \
+            --enable-code-coverage \
+            -derivedDataPath .build/derivedData
+  after_success:
+    # upload coverage data
+    - bash <(curl -s https://codecov.io/bash) -J '^ResterCore$' \
+        -D .build/derivedData
