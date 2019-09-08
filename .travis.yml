@@ -5,12 +5,12 @@ jobs:
     os: osx
     osx_image: xcode10.2
     script:
-      swift package generate-xcodeproj
-      xcodebuild test \
-              -scheme HTTPKit-Package \
-              -destination platform="macOS" \
-              -enableCodeCoverage YES \
-              -derivedDataPath .build/derivedData
+      - swift package generate-xcodeproj
+      - xcodebuild test \
+                -scheme HTTPKit-Package \
+                -destination platform="macOS" \
+                -enableCodeCoverage YES \
+                -derivedDataPath .build/derivedData
     after_success:
       # upload coverage data
       - bash <(curl -s https://codecov.io/bash) -J '^HTTPKit$' \
