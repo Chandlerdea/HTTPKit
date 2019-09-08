@@ -7,7 +7,7 @@ jobs:
     script:
       - swift package generate-xcodeproj
       - xcodebuild test \
-                -scheme HTTPKit-Package \
+                -scheme HTTPKit \
                 -destination platform="macOS" \
                 -enableCodeCoverage YES \
                 -derivedDataPath .build/derivedData
