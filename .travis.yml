@@ -1,38 +1,9 @@
+language: swift
+script:
+  swift package generate-xcodeproj
+  xcodebuild test \
+          -scheme HTTPKit \
+          -destination platform="macOS" \
+          --enable-code-coverage \
+          -derivedDataPath .build/derivedData
 
-# Only create a build job IF there is no tag in the commit
-if: tag IS blank
-# Only create a build job IF the branch is 'master'
-branches:
-  only:
-  - master
-# Set environment variables for the build job  
-env:
-  global:
-  - SWIFT_BRANCH=swift-5.0-branch
-  - SWIFT_VERSION=swift-5.0-DEVELOPMENT-SNAPSHOT-2019-03-24-a
-  # PACKAGE_VERSION will be used by travis to create the Github release tag
-  - PACKAGE_VERSION=1.1
-jobs:
-  include:
-  - stage: OSX test
-    os: osx
-    osx_image: xcode10.3
-    language: swift
-    sudo: required
-    install:
-    - wget https://swift.org/builds/$SWIFT_BRANCH/xcode/$SWIFT_VERSION/$SWIFT_VERSION-osx.pkg
-    - sudo installer -pkg $SWIFT_VERSION-osx.pkg -target /
-    - export PATH="/Library/Developer/Toolchains/$SWIFT_VERSION.xctoolchain/usr/bin:$PATH"
-    script:
-    - swift package update
-    - swift test --enable-code-coverage
-    after_success:
-    - bash <(curl -s https://codecov.io/bash)
-  # The final stage will create a new Github tag using the version specified above, this will create
-  # a new release in Github
-  #- stage: Set tag
-  #  script:
-  #  - git config --global user.email "builds@travis-ci.com"
-  #  - git config --global user.name "Travis CI"
-  #  - git tag $PACKAGE_VERSION
-  #  - git push --quiet https://$GH_TOKEN@github.com/beatsbears/Incrementer --tag > /dev/null 2>&1
