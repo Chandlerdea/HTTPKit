@@ -1,3 +1,4 @@
+jobs:
 - name: macos xcode test
   stage: test
   os: osx
