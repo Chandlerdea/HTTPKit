@@ -7,9 +7,9 @@ jobs:
     script:
       swift package generate-xcodeproj
       xcodebuild test \
-              -scheme HTTPKit \
+              -scheme HTTPKit-Package \
               -destination platform="macOS" \
-              --enable-code-coverage \
+              -enableCodeCoverage YES \
               -derivedDataPath .build/derivedData
     after_success:
       # upload coverage data
