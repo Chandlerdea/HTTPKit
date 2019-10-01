@@ -117,7 +117,7 @@ extension HTTPModelController {
     }
 
     @available(iOS 13.0, *)
-    func getModels<ResponsePaylod: Codable & Equatable>(
+    public func getModels<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
     ) -> AnyPublisher<[ResponsePaylod], Error> {
@@ -135,7 +135,7 @@ extension HTTPModelController {
     }
 
     @available(iOS 13.0, *)
-    func getModel<ResponsePaylod: Codable & Equatable>(
+    public func getModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
     ) -> AnyPublisher<ResponsePaylod, Error> {
@@ -153,7 +153,7 @@ extension HTTPModelController {
     }
 
     @available(iOS 13.0, *)
-    func postModel<ResponsePaylod: Codable & Equatable>(
+    public func postModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
     ) -> AnyPublisher<ResponsePaylod, Error> {
@@ -171,7 +171,7 @@ extension HTTPModelController {
     }
 
     @available(iOS 13.0, *)
-    func putModel<ResponsePaylod: Codable & Equatable>(
+    public func putModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
     ) -> AnyPublisher<ResponsePaylod, Error> {
@@ -189,7 +189,7 @@ extension HTTPModelController {
     }
 
     @available(iOS 13.0, *)
-    func deleteModel(
+    public func deleteModel(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
     ) -> AnyPublisher<Void, Error> {
