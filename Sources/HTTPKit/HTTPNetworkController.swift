@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Combine
 
 /// Interface for sending `URLRequest`s and decoding responses
 public protocol HTTPNetworkController: class {
@@ -24,6 +25,13 @@ public protocol HTTPNetworkController: class {
     )
 
     
+    @available(iOS 13.0, *)
+    func sendRequest<T: Decodable>(
+        _ request: URLRequest,
+        in session: URLSession
+    ) -> AnyPublisher<T, Error>
+
+    
     /// Sends a `URLRequest` that expects the response to have no content
     ///
     /// - Parameters:
@@ -35,24 +43,13 @@ public protocol HTTPNetworkController: class {
         in session: URLSession,
         _ completion: @escaping (Result<Void, Error>) -> Void
     )
-}
 
-extension HTTPNetworkController {
-
-    /// Sends a `URLRequest` and attempts to decode the response to generic type `T`
-    ///
-    /// - Parameters:
-    ///   - builder: The `HTTP.RequestBuilder` that will build the `URLRequest`
-    ///   - session: The `URLSession` that will send the `URLRequest`. This is used to inject a mock `URLSession`
-    ///   - completion: A closure that passes `Result<T, Error>`
-    public func sendRequest<T: Decodable>(
-        with builder: HTTP.RequestBuilder,
-        in session: URLSession = URLSession.shared,
-        _ completion: @escaping (Result<T, Error>) -> Void
-    ) {
-        return self.sendRequest(builder.build(), in: session, completion)
-    }
-
+    @available(iOS 13.0, *)
+    func sendRequestExpectingNoContent(
+        _ request: URLRequest,
+        in session: URLSession
+    ) -> AnyPublisher<Void, Error>
+    
 }
 
 extension HTTP {
@@ -109,7 +106,7 @@ extension HTTPNetworkController {
         }
         task.resume()
     }
-    
+
     public func sendRequestExpectingNoContent(
         _ request: URLRequest,
         in session: URLSession = URLSession.shared,
@@ -125,6 +122,45 @@ extension HTTPNetworkController {
             }
         }
         task.resume()
+    }
+
+    @available(iOS 13.0, *)
+    public func sendRequest<T: Decodable>(
+        _ request: URLRequest,
+        in session: URLSession
+    ) -> AnyPublisher<T, Error> {
+        return session
+            .dataTaskPublisher(for: request)
+            .tryMap { (data: Data, response: URLResponse) throws -> Data in
+                guard let status: HTTP.ResponseStatus = response.status else {
+                    throw HTTP.BadResponseStatusError.unknownResponseCode
+                }
+                guard response.hasValidResponseStatus(for: request) == true else {
+                    throw HTTP.BadResponseStatusError.unexpectedStatus(status)
+                }
+                return data
+            }
+            .decode(type: T.self, decoder: JSONDecoder())
+            .eraseToAnyPublisher()
+    }
+
+    @available(iOS 13.0, *)
+    public func sendRequestExpectingNoContent(
+        _ request: URLRequest,
+        in session: URLSession
+    ) -> AnyPublisher<Void, Error> {
+        return session
+            .dataTaskPublisher(for: request)
+            .tryMap { (_, response: URLResponse) throws -> Void in
+                guard let status: HTTP.ResponseStatus = response.status else {
+                    throw HTTP.BadResponseStatusError.unknownResponseCode
+                }
+                guard response.hasValidResponseStatus(for: request) == true else {
+                    throw HTTP.BadResponseStatusError.unexpectedStatus(status)
+                }
+                return ()
+            }
+            .eraseToAnyPublisher()
     }
     
 }

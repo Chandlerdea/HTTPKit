@@ -44,6 +44,8 @@ class HTTPResponseStatusTests: XCTestCase {
         let getRequest: URLRequest = URLRequest(url: url)
         var postRequest: URLRequest = URLRequest(url: url)
         postRequest.httpMethod = "POST"
+        var deleteRequest: URLRequest = URLRequest(url: url)
+        deleteRequest.httpMethod = "DELETE"
         
         let okResponse: URLResponse = HTTPURLResponse(
             url: url,
@@ -58,12 +60,20 @@ class HTTPResponseStatusTests: XCTestCase {
             httpVersion: "1.1",
             headerFields: .none
         )!
+
+        let noContentResponse: URLResponse = HTTPURLResponse(
+            url: url,
+            statusCode: HTTP.ResponseStatus.noContent.code,
+            httpVersion: "1.1",
+            headerFields: .none
+        )!
         
         XCTAssertEqual(okResponse.status, .ok)
         
         XCTAssertTrue(okResponse.hasValidResponseStatus(for: getRequest))
         XCTAssertFalse(createdResponse.hasValidResponseStatus(for: getRequest))
         XCTAssertTrue(createdResponse.hasValidResponseStatus(for: postRequest))
+        XCTAssertTrue(noContentResponse.hasValidResponseStatus(for: deleteRequest))
         
     }
 

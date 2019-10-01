@@ -11,10 +11,10 @@ import Foundation
 extension HTTP {
 
     /**
-            A base class that uses the [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern) to build and create `URLRequest`s.
-            This class is meant to be subclassed, and the subclasses should add convenience methods that call this base class's methods to configure the correct `URLRequest`.
-            When calling the methods, they are meant to be chained together, with the last call being `build()`. You can find an example of subclassing this in the [README](https://github.com/Chandlerdea/HTTPKit).
-        */
+        A base class that uses the [builder pattern](https://en.wikipedia.org/wiki/Builder_pattern) to build and create `URLRequest`s.
+        This class is meant to be subclassed, and the subclasses should add convenience methods that call this base class's methods to configure the correct `URLRequest`.
+        When calling the methods, they are meant to be chained together, with the last call being `build()`. You can find an example of subclassing this in the [README](https://github.com/Chandlerdea/HTTPKit).
+    */
     open class RequestBuilder {
         
         // MARK: - Properties
@@ -131,7 +131,7 @@ extension HTTP {
             for header in self.headers {
                 result = self.addHeader(header, to: result)
             }
-            result.httpMethod = self.method.rawValue
+            result.method = self.method
             return result
         }
     }

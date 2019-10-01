@@ -50,7 +50,7 @@ final class MockURLProtocol: URLProtocol {
                         "Content-Length": String(describing: contentLength),
                         "Content-Type": "application/json; charset=utf-8"
                     ]
-                    )!
+                )!
             } else {
                 response = HTTPURLResponse(
                     url: self.request.url!,
@@ -60,7 +60,7 @@ final class MockURLProtocol: URLProtocol {
                         "Content-Length": String(describing: contentLength),
                         "Content-Type": "application/json; charset=utf-8"
                     ]
-                    )!
+                )!
             }
             self.client?.urlProtocol(
                 self,

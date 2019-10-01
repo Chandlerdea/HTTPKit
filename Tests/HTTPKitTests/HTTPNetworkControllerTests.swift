@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import Combine
 @testable import HTTPKit
 
 private struct MockModel: Codable {
@@ -31,9 +32,11 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
             "name": "chandler"
         }
         """
+
         let controller: HTTPNetworkController = MockController()
-        let expectation: XCTestExpectation = self.expectation(description: "successful request")
+        var expectation: XCTestExpectation = self.expectation(description: "successful request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
+
         controller.sendRequest(request, in: self.urlSession) { (r: Result<MockModel, Error>) in
             switch r {
             case .success(let model):
@@ -44,6 +47,23 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: 1, handler: .none)
+
+        guard #available(iOS 13.0, *) else { return }
+        expectation = self.expectation(description: "successful request")
+        let cancel = controller
+            .sendRequest(
+                request,
+                in: self.urlSession
+            )
+            .sink(
+                receiveCompletion: { (completion: Subscribers.Completion<Error>) in
+                    expectation.fulfill()
+                },
+                receiveValue: { (model: MockModel) in
+                    XCTAssertEqual(model.name, "chandler")
+                }
+            )
+        self.waitForExpectations(timeout: 1, handler: .none)
     }
     
     func testThatBadJSONThrowsDecodingFailureError() {
@@ -53,9 +73,11 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
             "poo": "Foo"
         }
         """
+
         let controller: HTTPNetworkController = MockController()
-        let expectation: XCTestExpectation = self.expectation(description: "failure decoding json request")
+        var expectation: XCTestExpectation = self.expectation(description: "failure decoding json request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
+
         controller.sendRequest(request, in: self.urlSession) { (r: Result<MockModel, Error>) in
             switch r {
             case .success:
@@ -70,6 +92,33 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: 1, handler: .none)
+
+        guard #available(iOS 13.0, *) else { return }
+        expectation = self.expectation(description: "failure decoding json request")
+        let cancel = controller
+            .sendRequest(
+                request,
+                in: self.urlSession
+            )
+            .sink(
+                receiveCompletion: { (completion: Subscribers.Completion<Error>) in
+                    switch completion {
+                    case .finished:
+                        XCTFail("Publisher should not finish")
+                    case .failure(let error):
+                        if error is DecodingError {
+                            break
+                        } else {
+                            XCTFail("Expected error \(String(describing: error))")
+                        }
+                    }
+                    expectation.fulfill()
+                },
+                receiveValue: { (model: MockModel) in
+                    XCTFail("Should not receive value")
+                }
+            )
+        self.waitForExpectations(timeout: 1, handler: .none)
     }
     
     func testThatUnexpectedResponseCodeThrowsError() {
@@ -80,7 +129,7 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
         }
         """
         let controller: HTTPNetworkController = MockController()
-        let expectation: XCTestExpectation = self.expectation(description: "failure decoding json request")
+        var expectation: XCTestExpectation = self.expectation(description: "failure decoding json request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
         controller.sendRequest(request, in: self.urlSession) { (r: Result<MockModel, Error>) in
             switch r {
@@ -96,6 +145,33 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: 1, handler: .none)
+
+        guard #available(iOS 13.0, *) else { return }
+        expectation = self.expectation(description: "failure decoding json request")
+        let cancel = controller
+            .sendRequest(
+                request,
+                in: self.urlSession
+            )
+            .sink(
+                receiveCompletion: { (completion: Subscribers.Completion<Error>) in
+                    switch completion {
+                    case .finished:
+                        XCTFail("Publisher should not finish")
+                    case .failure(let error):
+                        if case HTTP.BadResponseStatusError.unexpectedStatus(let wrongStatus) = error {
+                            XCTAssertEqual(wrongStatus, .created)
+                        } else {
+                            XCTFail("Unexpected error \(String(describing: error))")
+                        }
+                    }
+                    expectation.fulfill()
+                },
+                receiveValue: { (model: MockModel) in
+                    XCTFail("Should not receive a value")
+                }
+            )
+        self.waitForExpectations(timeout: 1, handler: .none)
     }
     
     func testThatUnknownResponseCodeThrowsError() {
@@ -106,7 +182,7 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
         }
         """
         let controller: HTTPNetworkController = MockController()
-        let expectation: XCTestExpectation = self.expectation(description: "failure decoding json request")
+        var expectation: XCTestExpectation = self.expectation(description: "failure decoding json request")
         let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
         controller.sendRequest(request, in: self.urlSession) { (r: Result<MockModel, Error>) in
             switch r {
@@ -116,35 +192,46 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
                 if case HTTP.BadResponseStatusError.unknownResponseCode = error {
                     break
                 } else {
-                    XCTFail("Expected error \(String(describing: error))")
+                    XCTFail("Unexpected error \(String(describing: error))")
                 }
             }
             expectation.fulfill()
         }
         self.waitForExpectations(timeout: 1, handler: .none)
-    }
-    
-    func testThatRequestThrowsNoResponseStatusError() {
-        let controller: HTTPNetworkController = MockController()
-        let expectation: XCTestExpectation = self.expectation(description: "unsuccessful request")
-        let request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
-        controller.sendRequest(request, in: self.urlSession) { (r: Result<MockModel, Error>) in
-            switch r {
-            case .success:
-                XCTFail("exepcted failure")
-            case .failure:
-                break
-            }
-            expectation.fulfill()
-        }
-        self.waitForExpectations(timeout: 1, handler: .none)
+
+        guard #available(iOS 13.0, *) else { return }
+        expectation = self.expectation(description: "failure decoding json request")
+        let cancel = controller
+            .sendRequest(
+                request,
+                in: self.urlSession
+            )
+            .sink(
+                receiveCompletion: { (completion: Subscribers.Completion<Error>) in
+                    switch completion {
+                    case .finished:
+                        XCTFail("Publisher should not finish")
+                    case .failure(let error):
+                        if case HTTP.BadResponseStatusError.unknownResponseCode = error {
+                            break
+                        } else {
+                            XCTFail("Unexpected error \(String(describing: error))")
+                        }
+                    }
+                    expectation.fulfill()
+                },
+                receiveValue: { (model: MockModel) in
+                    XCTFail("Should not receive a value")
+                }
+            )
+      self.waitForExpectations(timeout: 1, handler: .none)
     }
     
     func testThatRequestWithNoResponseReturnsVoidSuccess() {
         MockURLProtocol.response = .noContent
         MockURLProtocol.payload = String()
         let controller: HTTPNetworkController = MockController()
-        let expectation: XCTestExpectation = self.expectation(description: "no content response")
+        var expectation: XCTestExpectation = self.expectation(description: "no content response")
         var request: URLRequest = URLRequest(url: URL(string: "http://www.google.com")!)
         request.method = .delete
         controller.sendRequestExpectingNoContent(request, in: self.urlSession) { (r: Result<Void, Error>) in
@@ -156,6 +243,29 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
             }
             expectation.fulfill()
         }
+        self.waitForExpectations(timeout: 1, handler: .none)
+
+        guard #available(iOS 13.0, *) else { return }
+        expectation = self.expectation(description: "failure decoding json request")
+        let cancel = controller
+            .sendRequestExpectingNoContent(
+                request,
+                in: self.urlSession
+            )
+            .sink(
+                receiveCompletion: { (completion: Subscribers.Completion<Error>) in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        XCTFail("Unexpected error \(String(describing: error))")
+                    }
+                    expectation.fulfill()
+                },
+                receiveValue: { () in
+                    return
+                }
+            )
         self.waitForExpectations(timeout: 1, handler: .none)
     }
 

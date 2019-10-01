@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Combine
 
 /// An interface inheriting from `HTTPNetworkController` that adds CRUD methods for model objects
 public protocol HTTPModelController: HTTPNetworkController {
@@ -24,6 +25,12 @@ public protocol HTTPModelController: HTTPNetworkController {
         completion: @escaping (Result<[ResponsePaylod], Error>) -> Void
     )
 
+    @available(iOS 13.0, *)
+    func getModels<ResponsePaylod: Codable & Equatable>(
+        with requestBuilder: HTTP.RequestBuilder,
+        in session: URLSession
+    ) -> AnyPublisher<[ResponsePaylod], Error>
+
     /// Makes a GET request and decodes a generic model
     ///
     /// - Parameters:
@@ -35,6 +42,12 @@ public protocol HTTPModelController: HTTPNetworkController {
         in session: URLSession,
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
     )
+
+    @available(iOS 13.0, *)
+    func getModel<ResponsePaylod: Codable & Equatable>(
+        with requestBuilder: HTTP.RequestBuilder,
+        in session: URLSession
+    ) -> AnyPublisher<ResponsePaylod, Error>
 
     /// Makes a POST request and decodes a generic model
     ///
@@ -48,6 +61,12 @@ public protocol HTTPModelController: HTTPNetworkController {
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
     )
 
+    @available(iOS 13.0, *)
+    func postModel<ResponsePaylod: Codable & Equatable>(
+        with requestBuilder: HTTP.RequestBuilder,
+        in session: URLSession
+    ) -> AnyPublisher<ResponsePaylod, Error>
+
     /// Makes a PUT request and decodes a generic model
     ///
     /// - Parameters:
@@ -60,6 +79,12 @@ public protocol HTTPModelController: HTTPNetworkController {
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
     )
 
+    @available(iOS 13.0, *)
+    func putModel<ResponsePaylod: Codable & Equatable>(
+        with requestBuilder: HTTP.RequestBuilder,
+        in session: URLSession
+    ) -> AnyPublisher<ResponsePaylod, Error>
+
     /// Makes a DELETE request and passes a `Result<Void, Error>`
     ///
     /// - Parameters:
@@ -71,6 +96,12 @@ public protocol HTTPModelController: HTTPNetworkController {
         in session: URLSession,
         completion: @escaping (Result<Void, Error>) -> Void
     )
+
+    @available(iOS 13.0, *)
+    func deleteModel(
+        with requestBuilder: HTTP.RequestBuilder,
+        in session: URLSession
+    ) -> AnyPublisher<Void, Error>
 
 }
 
@@ -85,6 +116,15 @@ extension HTTPModelController {
         self.sendRequest(request, in: session, completion)
     }
 
+    @available(iOS 13.0, *)
+    func getModels<ResponsePaylod: Codable & Equatable>(
+        with requestBuilder: HTTP.RequestBuilder,
+        in session: URLSession
+    ) -> AnyPublisher<[ResponsePaylod], Error> {
+        let request: URLRequest = requestBuilder.build()
+        return self.sendRequest(request, in: session)
+    }
+
     public func getModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession = URLSession.shared,
@@ -92,6 +132,15 @@ extension HTTPModelController {
     ) {
         let request: URLRequest = requestBuilder.build()
         self.sendRequest(request, in: session, completion)
+    }
+
+    @available(iOS 13.0, *)
+    func getModel<ResponsePaylod: Codable & Equatable>(
+        with requestBuilder: HTTP.RequestBuilder,
+        in session: URLSession
+    ) -> AnyPublisher<ResponsePaylod, Error> {
+        let request: URLRequest = requestBuilder.build()
+        return self.sendRequest(request, in: session)
     }
 
     public func postModel<ResponsePaylod: Codable & Equatable>(
@@ -103,6 +152,15 @@ extension HTTPModelController {
         self.sendRequest(request, in: session, completion)
     }
 
+    @available(iOS 13.0, *)
+    func postModel<ResponsePaylod: Codable & Equatable>(
+        with requestBuilder: HTTP.RequestBuilder,
+        in session: URLSession
+    ) -> AnyPublisher<ResponsePaylod, Error> {
+        let request: URLRequest = requestBuilder.setMethod(.post).build()
+        return self.sendRequest(request, in: session)
+    }
+
     public func putModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession = URLSession.shared,
@@ -112,6 +170,15 @@ extension HTTPModelController {
         self.sendRequest(request, in: session, completion)
     }
 
+    @available(iOS 13.0, *)
+    func putModel<ResponsePaylod: Codable & Equatable>(
+        with requestBuilder: HTTP.RequestBuilder,
+        in session: URLSession
+    ) -> AnyPublisher<ResponsePaylod, Error> {
+        let request: URLRequest = requestBuilder.setMethod(.put).build()
+        return self.sendRequest(request, in: session)
+    }
+
     public func deleteModel(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession = URLSession.shared,
@@ -119,6 +186,15 @@ extension HTTPModelController {
     ) {
         let request: URLRequest = requestBuilder.setMethod(.delete).build()
         self.sendRequestExpectingNoContent(request, in: session, completion)
+    }
+
+    @available(iOS 13.0, *)
+    func deleteModel(
+        with requestBuilder: HTTP.RequestBuilder,
+        in session: URLSession
+    ) -> AnyPublisher<Void, Error> {
+        let request: URLRequest = requestBuilder.setMethod(.delete).build()
+        return self.sendRequestExpectingNoContent(request, in: session)
     }
 
 }
