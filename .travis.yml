@@ -3,7 +3,7 @@ jobs:
   - name: macos xcode test
     stage: test
     os: osx
-    osx_image: xcode10.2
+    osx_image: xcode11.2
     script:
       - swift package generate-xcodeproj
       - xcodebuild test -scheme HTTPKit-Package -destination platform="macOS" -enableCodeCoverage YES -derivedDataPath .build/derivedData
