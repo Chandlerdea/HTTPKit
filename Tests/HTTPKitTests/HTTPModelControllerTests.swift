@@ -54,7 +54,7 @@ class HTTPModelControllerTests: XCTestCase, MockNetworkTestable {
         )
         self.waitForExpectations(timeout: 1, handler: .none)
 
-        guard #available(iOS 13.0, *) else { return }
+        guard #available(iOS 13.0, OSX 10.15, *) else { return }
         expectation = self.expectation(description: "get models")
         let cancel = controller
             .getModels(
@@ -96,7 +96,7 @@ class HTTPModelControllerTests: XCTestCase, MockNetworkTestable {
         )
         self.waitForExpectations(timeout: 1, handler: .none)
 
-        guard #available(iOS 13.0, *) else { return }
+        guard #available(iOS 13.0, OSX 10.15, *) else { return }
         expectation = self.expectation(description: "get model")
         let cancel = controller
             .getModel(
@@ -139,7 +139,7 @@ class HTTPModelControllerTests: XCTestCase, MockNetworkTestable {
         )
         self.waitForExpectations(timeout: 1, handler: .none)
 
-        guard #available(iOS 13.0, *) else { return }
+        guard #available(iOS 13.0, OSX 10.15, *) else { return }
         expectation = self.expectation(description: "post model")
         let cancel = controller
             .postModel(
@@ -183,7 +183,7 @@ class HTTPModelControllerTests: XCTestCase, MockNetworkTestable {
         )
         self.waitForExpectations(timeout: 1, handler: .none)
 
-        guard #available(iOS 13.0, *) else { return }
+        guard #available(iOS 13.0, OSX 10.15, *) else { return }
         expectation = self.expectation(description: "put model")
         let cancel = controller
             .putModel(
@@ -221,7 +221,7 @@ class HTTPModelControllerTests: XCTestCase, MockNetworkTestable {
         )
         self.waitForExpectations(timeout: 1, handler: .none)
 
-        guard #available(iOS 13.0, *) else { return }
+        guard #available(iOS 13.0, OSX 10.15, *) else { return }
         expectation = self.expectation(description: "delete model")
         let cancel = controller
             .deleteModel(

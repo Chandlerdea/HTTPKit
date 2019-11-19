@@ -25,7 +25,7 @@ public protocol HTTPModelController: HTTPNetworkController {
         completion: @escaping (Result<[ResponsePaylod], Error>) -> Void
     )
 
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     func getModels<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
@@ -43,7 +43,7 @@ public protocol HTTPModelController: HTTPNetworkController {
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
     )
 
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     func getModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
@@ -61,7 +61,7 @@ public protocol HTTPModelController: HTTPNetworkController {
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
     )
 
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     func postModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
@@ -79,7 +79,7 @@ public protocol HTTPModelController: HTTPNetworkController {
         completion: @escaping (Result<ResponsePaylod, Error>) -> Void
     )
 
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     func putModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
@@ -97,7 +97,7 @@ public protocol HTTPModelController: HTTPNetworkController {
         completion: @escaping (Result<Void, Error>) -> Void
     )
 
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     func deleteModel(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
@@ -116,7 +116,7 @@ extension HTTPModelController {
         self.sendRequest(request, in: session, completion)
     }
 
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     public func getModels<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
@@ -134,7 +134,7 @@ extension HTTPModelController {
         self.sendRequest(request, in: session, completion)
     }
 
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     public func getModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
@@ -152,7 +152,7 @@ extension HTTPModelController {
         self.sendRequest(request, in: session, completion)
     }
 
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     public func postModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
@@ -170,7 +170,7 @@ extension HTTPModelController {
         self.sendRequest(request, in: session, completion)
     }
 
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     public func putModel<ResponsePaylod: Codable & Equatable>(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession
@@ -188,7 +188,7 @@ extension HTTPModelController {
         self.sendRequestExpectingNoContent(request, in: session, completion)
     }
 
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     public func deleteModel(
         with requestBuilder: HTTP.RequestBuilder,
         in session: URLSession

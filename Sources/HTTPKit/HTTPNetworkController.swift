@@ -25,7 +25,7 @@ public protocol HTTPNetworkController: class {
     )
 
     
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     func sendRequest<T: Decodable>(
         _ request: URLRequest,
         in session: URLSession
@@ -44,7 +44,7 @@ public protocol HTTPNetworkController: class {
         _ completion: @escaping (Result<Void, Error>) -> Void
     )
 
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     func sendRequestExpectingNoContent(
         _ request: URLRequest,
         in session: URLSession
@@ -124,7 +124,7 @@ extension HTTPNetworkController {
         task.resume()
     }
 
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     public func sendRequest<T: Decodable>(
         _ request: URLRequest,
         in session: URLSession
@@ -144,7 +144,7 @@ extension HTTPNetworkController {
             .eraseToAnyPublisher()
     }
 
-    @available(iOS 13.0, *)
+    @available(iOS 13.0, OSX 10.15, *)
     public func sendRequestExpectingNoContent(
         _ request: URLRequest,
         in session: URLSession

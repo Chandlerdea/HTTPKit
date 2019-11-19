@@ -48,7 +48,7 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
         }
         self.waitForExpectations(timeout: 1, handler: .none)
 
-        guard #available(iOS 13.0, *) else { return }
+        guard #available(iOS 13.0, OSX 10.15, *) else { return }
         expectation = self.expectation(description: "successful request")
         let cancel = controller
             .sendRequest(
@@ -93,7 +93,7 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
         }
         self.waitForExpectations(timeout: 1, handler: .none)
 
-        guard #available(iOS 13.0, *) else { return }
+        guard #available(iOS 13.0, OSX 10.15, *) else { return }
         expectation = self.expectation(description: "failure decoding json request")
         let cancel = controller
             .sendRequest(
@@ -146,7 +146,7 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
         }
         self.waitForExpectations(timeout: 1, handler: .none)
 
-        guard #available(iOS 13.0, *) else { return }
+        guard #available(iOS 13.0, OSX 10.15, *) else { return }
         expectation = self.expectation(description: "failure decoding json request")
         let cancel = controller
             .sendRequest(
@@ -199,7 +199,7 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
         }
         self.waitForExpectations(timeout: 1, handler: .none)
 
-        guard #available(iOS 13.0, *) else { return }
+        guard #available(iOS 13.0, OSX 10.15, *) else { return }
         expectation = self.expectation(description: "failure decoding json request")
         let cancel = controller
             .sendRequest(
@@ -245,7 +245,7 @@ class HTTPNetworkControllerTests: XCTestCase, MockNetworkTestable {
         }
         self.waitForExpectations(timeout: 1, handler: .none)
 
-        guard #available(iOS 13.0, *) else { return }
+        guard #available(iOS 13.0, OSX 10.15, *) else { return }
         expectation = self.expectation(description: "failure decoding json request")
         let cancel = controller
             .sendRequestExpectingNoContent(
