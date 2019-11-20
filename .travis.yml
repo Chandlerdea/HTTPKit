@@ -6,7 +6,7 @@ jobs:
     osx_image: xcode11.2
     script:
       - swift package generate-xcodeproj
-      - xcodebuild test -scheme HTTPKit-Package -destination "platform=iOS Simulator,name=iPhone 11,OS=13.2.2" -enableCodeCoverage YES -derivedDataPath .build/derivedData
+      - xcodebuild test -scheme HTTPKit-Package -destination "platform=iOS Simulator,name=iPhone 11,OS=13.2" -enableCodeCoverage YES -derivedDataPath .build/derivedData
     after_success:
       # upload coverage data
       - bash <(curl -s https://codecov.io/bash) -J '^HTTPKit$' -D .build/derivedData
