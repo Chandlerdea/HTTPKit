@@ -42,7 +42,7 @@ extension URLRequest {
     /// Adds a `HTTP.Header` to a `URLRequest`
     ///
     /// - Parameter header: The `HTTP.Header` to add to the `URLRequest`
-    mutating func add(_ header: HTTP.Header) {
+    public mutating func add(_ header: HTTP.Header) {
         let nameValue: (String, String) = header.nameAndValue
         self.addValue(nameValue.1, forHTTPHeaderField: nameValue.0)
     }
