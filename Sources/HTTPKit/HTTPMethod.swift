@@ -34,7 +34,7 @@ extension HTTP {
 
 extension URLRequest {
     
-    var method: HTTP.Method? {
+    public var method: HTTP.Method? {
         get {
             return self.httpMethod.flatMap(HTTP.Method.init(rawValue:))
         }
