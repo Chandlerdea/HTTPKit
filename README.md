@@ -1,10 +1,11 @@
 # HTTPKit
-![swift 5.1](https://img.shields.io/badge/swift-5.0-blue.svg)
+![swift 5.1](https://img.shields.io/badge/swift-5.1-blue.svg)
 ![iOS](https://img.shields.io/badge/os-iOS-green.svg)
 ![macOS](https://img.shields.io/badge/os-macOS-green.svg)
 ![tvOS](https://img.shields.io/badge/os-tvOS-green.svg)
-[![Build Status](https://travis-ci.org/Chandlerdea/HTTPKit.svg?branch=master)](https://travis-ci.org/Chandlerdea/HTTPKit)
-[![codecov](https://codecov.io/gh/Chandlerdea/HTTPKit/branch/master/graph/badge.svg)](https://codecov.io/gh/Chandlerdea/HTTPKit)
+![watchOS](https://img.shields.io/badge/os-watchOS-green.svg)
+![Build Status](https://travis-ci.org/Chandlerdea/HTTPKit.svg?branch=master)](https://travis-ci.org/Chandlerdea/HTTPKit)
+![codecov](https://codecov.io/gh/Chandlerdea/HTTPKit/branch/master/graph/badge.svg)](https://codecov.io/gh/Chandlerdea/HTTPKit)
 
 A Swift package containing constructs for interacting with APIs over the HTTP protocol.
 
@@ -18,13 +19,13 @@ A Swift package containing constructs for interacting with APIs over the HTTP pr
 
 You can use the [Swift Package Manager](https://swift.org/package-manager/) to install `HTTPKit` by adding the proper description to your `Package.swift` file:
 ```swift
-// swift-tools-version:5.0
+// swift-tools-version:5.1
 import PackageDescription
 
 let package = Package(
     name: "YOUR_PROJECT_NAME",
     dependencies: [
-        .package(url: "https://github.com/Chandlerdea/HTTPKit.git", from: "1.1"),
+        .package(url: "https://github.com/Chandlerdea/HTTPKit.git", from: "1.4"),
     ]
 )
 ```
