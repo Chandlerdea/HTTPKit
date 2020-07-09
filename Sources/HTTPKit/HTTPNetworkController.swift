@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 /// Interface for sending `URLRequest`s and decoding responses
-public protocol HTTPNetworkController: class {
+public protocol HTTPNetworkController {
     
     /// Sends a `URLRequest` and attempts to decode the response to generic type `T`
     ///
